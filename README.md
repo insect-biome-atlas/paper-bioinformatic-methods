@@ -1,2 +1,2 @@
 # iba-paper-bioinformatic-methods
-Repo for figures and scripts associated with paper on bioformatic methods within IBA
+Collection of scripts, metadata, READMEs etc. used for generating figures, tables and running analyses for bioinformatic methods paper. 
