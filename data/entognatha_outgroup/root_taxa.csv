@@ -1,0 +1,21 @@
+TipLabel;Kingdom;Phylum;Class;Order;Family;Genus;Species;NCBI;Start;Stop;Stop_codon_included;Type
+Peronospora_tabacina;Chromista;Oomycota;Peronosporea;Peronosporales;Peronosporacea;Peronospora;Peronospora tabacina;NC_028331.1;14066;15553;TRUE;Mt genome
+Aphanomyces_astaci;Chromista;Oomycota;Peronosporea;Saprolegniales;Saprolegniaceae;Aphanomyces;Aphanomyces astaci;KX405004.1;47998;49485;TRUE;Mt genome
+Steinernema_carpocapsae;Animalia;Nematoda;Chromadorea;Rhabditida;Steinernematidae;Steinernema;Steinernema carpocapsae;NC_005941.1;8420;9994;TRUE;Mt genome
+Epipenaeon_fissurae;Animalia;Arthropoda;Malacostraca;Isopoda;Bopyridae;Epipenaeon;Epipenaeon fissurae;NC_070272.1;1088;2623;FALSE;Mt genome
+Hypsibius_dujardini;Animalia;Tardigrada;Eutardigrada;Parachela;Hypsibiidae;Hypsibius;Hypsibius dujardini;NC_014848.1;31;1563;TRUE;Mt genome
+Anaulaciulus_koreanus;Animalia;Arthropoda;Diplopoda;Julida;Julidae;Anaulaciulus;Anaulaciulus koreanus;NC_034656.1;1293;2825;TRUE;Mt genome
+Apodemus_sylvaticus;Animalia;Chordata;Mammalia;Rodentia;Muridae;Apodemus;Apodemus sylvaticus;NC_049122.1;5325;6869;TRUE;Mt genome
+Cepaea_nemoralis;Animalia;Mollusca;Gastropoda;Stylommatophora;Helicidae;Cepaea;Cepaea nemoralis;U23045.1;2;1492;TRUE;Mt genome
+Amphitetranychus_viennensis;Animalia;Arthropoda;Arachnida;Trombidiformes;Tetranychidae;Amphitetranychus;Amphitetranychus viennensis;NC_032381.1;1;1536;TRUE;Mt genome
+Erigone_atra;Animalia;Arthropoda;Arachnida;Araneae;Linyphiidae;Erigone;Erigone atra;PP726907.1;2;1537;TRUE;Mt genome
+Parasitus_fimetorum;Animalia;Arthropoda;Arachnida;Mesostigmata;Parasitidae;Parasitus;Parasitus fimetorum;NC_061975.1;1;1500;TRUE;Mt genome
+Opilio_parietinus;Animalia;Arthropoda;Arachnida;Opiliones;Phalangiidae;Opilio;Opilio parietinus;NC_014700.1;1;1539;TRUE;Mt genome
+Enchytraeus_irregularis;Animalia;Annelida;Clitellata;Enchytraeida;Enchytraeidae;Enchytraeus;Enchytraeus irregularis;NC_070077.1;1;1539;TRUE;Mt genome
+Reclinomonas_americana;Diphoda;Discoba;Jakobea;Jakobida;Histionidae;Reclinomonas;Reclinomonas americana;NC_001823.1;63438;65033;TRUE;Mt genome
+Petrobius_brevistylis;Animalia;Arthropoda;Insecta;Archaeognatha;Machilidae;Petrobius;Petrobius brevistylis;AY956355.1;1429;2988;TRUE;Mt genome
+Lepisma_saccharina;Animalia;Arthropoda;Insecta;Zygentoma;Lepismatidae;Lepisma;Lepisma saccharinum;NC_047445.1;11169;12704;FALSE;Mt genome
+Cloeon_dipterum;Animalia;Arthropoda;Insecta;Ephemeroptera;Baetidae;Baetis;Cloeon dipterum;MW149047.1;2322;3854;FALSE;Mt genome
+Drosophila_melanogaster;Animalia;Arthropoda;Insecta;Diptera;Drosophilidae;Drosophila;Drosophila melanogaster;NC_024511.2;1474;3009;TRUE;Mt genome
+Sylvia_borin;Animalia;Chordata;Aves;Passeriformes;Sylviidae;Sylvia;Sylvia borin;NC_053054.1;5416;6966;FALSE;Mt genome
+Caloglyphus_berlesei;Animalia;Arthropoda;Arachnida;Sarcoptiformes;Acaridae;Caloglyphus;Caloglyphus berlesei;NC_024637.1;1;1551;TRUE;Mt genome
