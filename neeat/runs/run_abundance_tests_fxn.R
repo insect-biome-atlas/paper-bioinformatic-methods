@@ -12,7 +12,7 @@ run_abundance_tests <- function(params) {
     finbol_tax <- read.delim("../evaluation_data/finbol_taxonomy.tsv")
     se_family <- read.delim("../evaluation_data/se_fauna_family.tsv")
 
-    res_file <- paste0("../results/abundance_res_",params$run[1],".tsv")
+    res_file <- paste0("../results/abundance_res_",params$run[1],"-",params$run[nrow(params)],".tsv")
     res <- data.frame()
 
     for (ord in orders) {
@@ -36,6 +36,8 @@ run_abundance_tests <- function(params) {
             } else {
                 ord_counts <- read.delim(paste0(data_path,ord,"_cal_counts.tsv"), sep="\t", header=TRUE, row.names=1)
             }
+
+#            print(str(ord_counts))
 
             x <- abundance_filter(ord_counts,
                                   cutoff      = params$cutoff[i],
