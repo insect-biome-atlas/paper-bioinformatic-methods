@@ -1,4 +1,4 @@
-"run"	"min_match"	"min_overlap"	"ratio_type"	"max_read_ratio"	"require_corr"
+"run"	"min_match"	"min_overlap"	"read_ratio_type"	"max_read_ratio"	"require_corr"
 1	84	0.9	max	1	FALSE
 2	84	0.9	mean	1	FALSE
 3	84	0.95	max	0.1	TRUE
