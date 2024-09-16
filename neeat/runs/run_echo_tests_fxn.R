@@ -50,27 +50,7 @@ run_echo_tests <- function(params) {
         write.table(res,res_file, sep="\t", row.names=FALSE)
     }
 
-    # Compute summary result for all orders
-
-    # Cycle over runs
-    for (i in 1:nrow(params)) {
-
-        x <- res$run==params$run[i]
-
-        res <- rbind(res,
-                     c(taxon="Hexapoda",
-                       as.list(params[i,]),
-                       clusters         = sum(res[x,"clusters"]),
-                       removed_clusters = sum(res[x,"removed_clusters"]),
-                       unique_bins      = sum(res[x,"unique_bins"]),
-                       removed_uniques  = sum(res[x,"removed_uniques"]),
-                       duplicate_bins   = sum(res[x,"duplicate_bins"]),
-                       remaining_dups   = sum(res[x,"remaining_dups"]),
-                       false_pos        = sum(res[x,"removed_uniques"])/sum(res[x,"unique_bins"]),
-                       false_neg        = sum(res[x,"remaining_dups"])/sum(res[x,"duplicate_bins"])
-                       )
-                    )
-    }
+    res <- add_hexapoda_res(res, params)
 
     # Write final version of result table
     write.table(res,res_file, sep="\t", row.names=FALSE)

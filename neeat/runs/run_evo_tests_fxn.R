@@ -10,17 +10,7 @@ run_evo_tests <- function(params) {
     orders <- unique(hex_tax$Order[!grepl("_X",hex_tax$Order) & !grepl("unclassified",hex_tax$Order)])
 
     res_file <- paste0("../results/evo_res_",params$run[1],".tsv")
-
-    res <- data.frame(c(taxon=character(), 
-                        as.list(params[FALSE,]),
-                        clusters=numeric(),
-                        removed_clusters=numeric(),
-                        unique_bins=numeric(),
-                        removed_uniques=numeric(),
-                        duplicate_bins=numeric(),
-                        remaining_dups=numeric(),
-                        false_pos=numeric(),
-                        false_neg=numeric()))
+    res <- data.frame()
 
     for (ord in orders) {
 
@@ -65,27 +55,7 @@ run_evo_tests <- function(params) {
         write.table(res,res_file, sep="\t", row.names=FALSE)
     }
 
-    # Compute summary result for all hexapod orders
-
-    # Cycle over runs
-    for (i in 1:nrow(params)) {
-
-        x <- res$run==params$run[i]
-
-        res <- rbind(res,
-                     c(taxon="Hexapoda",
-                       as.list(params[i,]),
-                       clusters         = sum(res[x,"clusters"]),
-                       removed_clusters = sum(res[x,"removed_clusters"]),
-                       unique_bins      = sum(res[x,"unique_bins"]),
-                       removed_uniques  = sum(res[x,"removed_uniques"]),
-                       duplicate_bins   = sum(res[x,"duplicate_bins"]),
-                       remaining_dups   = sum(res[x,"remaining_dups"]),
-                       false_pos        = sum(res[x,"removed_uniques"])/sum(res[x,"unique_bins"]),
-                       false_neg        = sum(res[x,"remaining_dups"])/sum(res[x,"duplicate_bins"])
-                       )
-                    )
-    }
+    res <- add_hexapoda_res(res, params)
 
     # Write final version of result table
     write.table(res,res_file, sep="\t", row.names=FALSE)
