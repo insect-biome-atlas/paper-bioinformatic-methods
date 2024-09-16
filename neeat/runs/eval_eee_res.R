@@ -24,9 +24,10 @@ for (ord in orders) {
 
         file <- paste0(raw_res_path,"eee_run",params$run[i],"_discarded_otus.tsv")
         discarded_otus <- read.delim(file,header=FALSE)
+        discarded_otus <- discarded_otus$V1[discarded_otus$V1 %in% ord_tax$ASV]
         asv_tax <- T[T$Order==ord,]
 
-        y <- eval_res(discarded_otus$V1, ord_tax, finbol_tax, asv_tax, se_family, debug=FALSE)
+        y <- eval_res(discarded_otus, ord_tax, finbol_tax, asv_tax, se_family, debug=FALSE)
 
         res <- rbind(res,
                      c(taxon=ord,

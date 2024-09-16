@@ -17,7 +17,7 @@ se_family <- read.delim("../evaluation_data/se_fauna_family.tsv")
 
 res_file <- "../results/lulu_res.tsv"
 
-params <- data.frame(list(run=1,method="lulu",settings="default"))
+params <- data.frame(list(run=1,method="LULU",min_match=84,min_overlap=0.95,read_ratio_type="max",max_read_ratio=1.0))
 
 res <- data.frame()
 for (ord in orders) {
