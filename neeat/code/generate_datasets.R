@@ -1,10 +1,10 @@
+# Generate dataset partitions
 library(data.table)
 source("get_data_fxns.R")
 
 output_path <- "../data/"
 
-taxonomy <- get_se_cluster_taxonomy()
-taxonomy <- taxonomy[taxonomy$representative==1,]
+taxonomy <- get_se_cluster_rep_taxonomy()
 counts <- fread("../bigdata/cluster_counts.tsv", header=TRUE, sep="\t")
 cal_counts <- fread("../bigdata/calibrated_cluster_counts.tsv", header=TRUE, sep="\t")
 tprop_counts <- fread("../bigdata/tot_proportional_cluster_counts.tsv", header=TRUE, sep="\t")

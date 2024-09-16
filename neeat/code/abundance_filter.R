@@ -1,9 +1,9 @@
 # Abundance filter algorithm
 abundance_filter <- function(counts, cutoff, cutoff_type="sum") {
 
-  if (cutoff=="sum")
+  if (cutoff_type=="sum") {
     reads <- rowSums(counts)
-  else {
+  } else {
     reads <- apply(counts, 1, max)
   }
 

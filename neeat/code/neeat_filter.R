@@ -6,7 +6,7 @@ source("../code/abundance_filter.R")
 # Note that taxonomy needs to be a data frame
 # and not a data table for Step 5 code to work
 neeat_filter <- function(counts,
-                         matchlist,
+                         distlist,
                          taxonomy,
                          steps="echo|evo_local|evo_global|abundance|taxonomy",
                          min_match=84,
@@ -21,6 +21,7 @@ neeat_filter <- function(counts,
                          dist_threshold_global=4.0,
                          abundance_cutoff_type="sum",
                          abundance_cutoff=4,
+                         assignment_taxonomy=taxonomy,
                          assignment_rank="Order",
                          debug=FALSE,
                          dump_prefix=""
@@ -31,9 +32,9 @@ neeat_filter <- function(counts,
     retained_clusters <- all_clusters
 
     # Step 1. The echo filter
-    if (grepl("echo",steps) && nrow(counts)>=2 && nrow(matchlist)!=0) {
+    if (grepl("echo",steps) && nrow(counts)>=2 && nrow(distlist)!=0) {
         res <- echo_filter(counts,
-                           matchlist,
+                           distlist,
                            min_match=min_match,
                            n_closest=n_closest,
                            min_overlap=echo_min_overlap,
@@ -53,9 +54,9 @@ neeat_filter <- function(counts,
     }
 
     # Step 2. The evo_local filter
-    if (grepl("evo_local",steps) && nrow(counts)>=2 && nrow(matchlist)!=0) {
+    if (grepl("evo_local",steps) && nrow(counts)>=2 && nrow(distlist)!=0) {
         res <- evo_filter(counts,
-                          matchlist,
+                          distlist,
                           min_match=min_match,
                           n_closest=n_closest,
                           min_overlap=evo_local_min_overlap,
@@ -75,9 +76,9 @@ neeat_filter <- function(counts,
     }
 
     # Step 3. The evo_global filter
-    if (grepl("evo_global",steps) && nrow(counts)>=2 && nrow(matchlist)!=0) {
+    if (grepl("evo_global",steps) && nrow(counts)>=2 && nrow(distlist)!=0) {
         res <- evo_filter(counts,
-                          matchlist,
+                          distlist,
                           min_match=min_match,
                           n_closest=n_closest,
                           dist_type="wdadn",
@@ -115,7 +116,7 @@ neeat_filter <- function(counts,
     # Step 5: The taxonomy filter
     if (grepl("taxonomy",steps)) {
 
-        unclassified_clusters <- taxonomy$ASV[grepl("_X",taxonomy[,assignment_rank]) | grepl("unclassified",taxonomy[,assignment_rank])]
+        unclassified_clusters <- assignment_taxonomy$ASV[grepl("_X",assignment_taxonomy[,assignment_rank]) | grepl("unclassified",assignment_taxonomy[,assignment_rank])]
 
         retained_clusters <- retained_clusters[!(retained_clusters %in% unclassified_clusters)]
         discarded_clusters <- c(discarded_clusters,retained_clusters[retained_clusters %in% unclassified_clusters])
