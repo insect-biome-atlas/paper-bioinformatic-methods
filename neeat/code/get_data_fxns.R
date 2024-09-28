@@ -1,11 +1,11 @@
 # Functions for getting original data. Modify the paths to fit your system.
-get_se_meta <- function() { read.delim("~/dev/figshare-repos/iba/raw_data/CO1_sequencing_metadata_SE.tsv") }
+get_se_meta <- function() { read.delim("/cfs/klemming/projects/snic/snic2020-16-248/processed_data/ASV_data/SE.v2/CO1_sequencing_metadata_SE.tsv") }
 
-get_se_cluster_taxonomy <- function() { read.delim("~/dev/figshare-repos/iba/processed_data/SE.v2/cluster_taxonomy.tsv") }
+get_se_cluster_taxonomy <- function() { read.delim("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_taxonomy.tsv") }
 get_se_cluster_rep_taxonomy <- function() { T<- get_se_cluster_taxonomy(); T[T$representative==1,] }
 
-get_se_cluster_counts_df <- function() { read.delim("~/dev/figshare-repos/iba/processed_data/SE.v2/cluster_counts.tsv") }
-get_se_cluster_counts_dt <- function() { require(data.table); fread("~/dev/figshare-repos/iba/processed_data/SE.v2/cluster_counts.tsv") }
+get_se_cluster_counts_df <- function() { read.delim("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_counts.tsv") }
+get_se_cluster_counts_dt <- function() { require(data.table); fread("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_counts.tsv") }
 
 get_se_cluster_taxonomy_samples_hexapoda <- function() {
 
