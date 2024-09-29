@@ -42,6 +42,14 @@ rule all:
     input:
         expand("results/{method}_res.tsv", method=["echo", "evo", "abundance", "ee", "eee", "eeea"])
 
+def set_echo_mem(wildcards):
+    if wildcards.order == "Diptera":
+        return 48000
+    elif wildcards.order in ["Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"]:
+        return 24000
+    else:
+        return 6000
+
 rule run_echo_filter:
     output:
         discarded="raw_results/{order}/echo_run{i}_discarded_otus.tsv",
@@ -50,14 +58,13 @@ rule run_echo_filter:
         counts="data/{order}_counts.tsv",
         taxonomy="data/{order}_taxonomy.tsv",
         matchlist="data/{order}_evodistlist.tsv",
-        #hex_tax = "data/Hexapoda_taxonomy.tsv",
         params="runs/echo_run_params.tsv",
         se_family="evaluation_data/se_fauna_family.tsv",
         finbol_tax="evaluation_data/finbol_taxonomy.tsv",
     log:
         "logs/{order}/echo_run_{i}.log"
     resources:
-        mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 12000,
+        mem_mb=set_echo_mem,
         runtime=lambda wildcards: 240 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 60,
         slurm_partition="shared",
         slurm_account="naiss2024-5-207"
@@ -268,16 +275,16 @@ rule aggregate_method:
         get_method_output
     run:
         import pandas as pd
-        dfs = [pd.read_csv(f, sep="\t", index_col=0) for f in snakemake.input]
+        dfs = [pd.read_csv(f, sep="\t", index_col=0) for f in input]
         df = pd.concat(dfs)
-        df.to_csv(snakemake.output[0], sep="\t")
+        df.to_csv(output[0], sep="\t")
 
 rule add_hexapoda:
     output:
         res_file="results/{method}_res.tsv"
     input:
         res="results/_{method}_res.tsv",
-        hex_tax="data/Hexapoda_taxonomy.tsv",
+        #hex_tax="data/Hexapoda_taxonomy.tsv",
         finbol_tax="evaluation_data/finbol_taxonomy.tsv",
         params="runs/{method}_run_params.tsv",
         se_family="evaluation_data/se_fauna_family.tsv",
