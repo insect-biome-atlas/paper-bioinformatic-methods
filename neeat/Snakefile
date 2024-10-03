@@ -1,5 +1,7 @@
 import pandas as pd
 
+large_orders = ["Diptera", "Hymenoptera", "Hemiptera", "Coleoptera"]
+
 def read_params(f):
     df = pd.read_csv(f, sep="\t", index_col=0)
     df.index = [str(x) for x in df.index]
@@ -65,9 +67,8 @@ rule run_echo_filter:
         "logs/{order}/echo_run_{i}.log"
     resources:
         mem_mb=set_echo_mem,
-        runtime=lambda wildcards: 240 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 60,
-        slurm_partition="shared",
-        slurm_account="naiss2024-5-207"
+        runtime=lambda wildcards: 240 if wildcards.order in large_orders else 10,
+    group: "echo"
     params:
         min_match=lambda wildcards: echo_params_dict[wildcards.i]["min_match"],
         min_overlap=lambda wildcards: echo_params_dict[wildcards.i]["min_overlap"],
@@ -103,10 +104,9 @@ rule run_ee_filter:
         dist_threshold=lambda wildcards: ee_params_dict[wildcards.ee_run]["dist_threshold"],
         require_overlap=lambda wildcards: ee_params_dict[wildcards.ee_run]["require_overlap"],
     resources:
-        mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 12000,
-        runtime=lambda wildcards: 240 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 60,
-        slurm_partition="shared",
-        slurm_account="naiss2024-5-207"
+        mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
+        runtime=lambda wildcards: 240 if wildcards.order in large_orders else 30,
+    group: "ee"
     script:
         "scripts/run_ee_filter.R"
 
@@ -133,10 +133,9 @@ rule eee_filter:
         dist_type=lambda wildcards: eee_params_dict[wildcards.eee_run]["dist_type"],
         dist_threshold=lambda wildcards: eee_params_dict[wildcards.eee_run]["dist_threshold"],
     resources:
-        mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 12000,
-        runtime=lambda wildcards: 240 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 60,
-        slurm_partition="shared",
-        slurm_account="naiss2024-5-207"
+        mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
+        runtime=lambda wildcards: 120 if wildcards.order in large_orders else 30,
+    group: "eee"
     script:
         "scripts/run_eee_filter.R"
 
@@ -172,10 +171,9 @@ rule run_eeea_filter:
         cutoff=lambda wildcards: eeea_params_dict[wildcards.eeea_run]["cutoff"],
         cutoff_type=lambda wildcards: eeea_params_dict[wildcards.eeea_run]["cutoff_type"],
     resources:
-        mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 12000,
-        runtime=lambda wildcards: 60 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 30,
-        slurm_partition="shared",
-        slurm_account="naiss2024-5-207"
+        mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
+        runtime=lambda wildcards: 60 if wildcards.order in large_orders else 30,
+    group: "eeea"
     script:
         "scripts/run_eeea_filter.R"
 
@@ -200,10 +198,9 @@ rule evo_filter:
         dist_threshold=lambda wildcards: evo_params_dict[wildcards.evo_run]["dist_threshold"],
         require_overlap=lambda wildcards: evo_params_dict[wildcards.evo_run]["require_overlap"],
     resources:
-        mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 12000,
-        runtime=lambda wildcards: 240 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 60,
-        slurm_partition="shared",
-        slurm_account="naiss2024-5-207"
+        mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
+        runtime=lambda wildcards: 120 if wildcards.order in large_orders else 30,
+    group: "evo"
     script:
         "scripts/run_evo_filter.R"
 
@@ -237,10 +234,9 @@ rule abundance_filter:
         cutoff=lambda wildcards: abundance_params_dict[wildcards.abundance_run]["cutoff"],
         cutoff_type=lambda wildcards: abundance_params_dict[wildcards.abundance_run]["cutoff_type"],
     resources:
-        mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 12000,
-        runtime=lambda wildcards: 60 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 30,
-        slurm_partition="shared",
-        slurm_account="naiss2024-5-207"
+        mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 1000,
+        runtime=lambda wildcards: 20 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 10,
+    group: "abundance"
     script:
         "scripts/run_abundance_filter.R"
 
@@ -248,17 +244,29 @@ rule aggregate_order:
     output:
         touch("results/{order}/done")
     input:
-        echo = expand("results/{{order}}/echo_res_{i}.tsv", 
+        echo_res = expand("results/{{order}}/echo_res_{i}.tsv", 
             i=list(echo_params_dict.keys())),
-        evo = expand("results/{{order}}/evo_res_{evo_run}.tsv",
+        echo_raw = expand("raw_results/{{order}}/echo_run{i}_discarded_otus.tsv", 
+            i=list(echo_params_dict.keys())),
+        evo_res = expand("results/{{order}}/evo_res_{evo_run}.tsv",
             evo_run=list(evo_params_dict.keys())),
-        abundance = expand("results/{{order}}/abundance_res_{abundance_run}.tsv",
+        evo_raw = expand("raw_results/{{order}}/evo_run{evo_run}_discarded_otus.tsv",
+            evo_run=list(evo_params_dict.keys())),
+        abundance_res = expand("results/{{order}}/abundance_res_{abundance_run}.tsv",
             abundance_run=list(abundance_params_dict.keys())),
-        ee = expand("results/{{order}}/ee_res_{ee_run}.tsv", 
+        abundance_raw = expand("raw_results/{{order}}/abundance_run{abundance_run}_discarded_otus.tsv",
+            abundance_run=list(abundance_params_dict.keys())),
+        ee_res = expand("results/{{order}}/ee_res_{ee_run}.tsv", 
             ee_run=list(ee_params_dict.keys())),
-        eee = expand("results/{{order}}/eee_res_{eee_run}.tsv", 
+        ee_raw = expand("raw_results/{{order}}/ee_run{ee_run}_discarded_otus.tsv",
+            ee_run=list(ee_params_dict.keys())),
+        eee_res = expand("results/{{order}}/eee_res_{eee_run}.tsv", 
             eee_run=list(eee_params_dict.keys())),
-        eeea = expand("results/{{order}}/eeea_res_{eeea_run}.tsv", 
+        eee_raw = expand("raw_results/{{order}}/eee_run{eee_run}_discarded_otus.tsv",
+            eee_run=list(eee_params_dict.keys())),
+        eeea_res = expand("results/{{order}}/eeea_res_{eeea_run}.tsv", 
+            eeea_run=list(eeea_params_dict.keys())),
+        eeea_raw = expand("raw_results/{{order}}/eeea_run{eeea_run}_discarded_otus.tsv",
             eeea_run=list(eeea_params_dict.keys())),
 
 def get_method_output(wildcards):
@@ -270,7 +278,7 @@ def get_method_output(wildcards):
 
 rule aggregate_method:
     output:
-        temp("results/_{method}_res.tsv")
+        "results/_{method}_res.tsv"
     input:
         get_method_output
     run:
