@@ -66,15 +66,17 @@ eval_res <- function(discarded_otus, otu_taxonomy, finbol_tax, asv_tax, se_famil
          n_spurious, "spurious clusters =", false_neg_spurious, "fraction remaining spurious clusters\n")
   }
 
-  if (n_finbol_clusters != 0)
+  if (n_finbol_clusters != 0) {
     false_pos_comb <- (unique_bins*false_pos + n_finbol_clusters*false_pos_finbol) / (unique_bins + n_finbol_clusters)
-  else
+  } else {
     false_pos_comb <- false_pos
+  }
 
-  if (n_spurious != 0)
+  if (n_spurious != 0) {
     false_neg_comb <- (dups*false_neg + n_spurious*false_neg_spurious) / (dups + n_spurious)
-  else
+  } else {
     false_neg_comb <- false_neg
+  }
 
   list(clusters=nrow(otu_taxonomy),
        removed_clusters=length(discarded_otus),
