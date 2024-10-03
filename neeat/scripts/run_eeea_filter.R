@@ -5,6 +5,7 @@ sink(file = snakemake@log[[1]], append = FALSE, type = c("output", "message"),
      split = FALSE)
 
 taxonomy <- read.delim(snakemake@input$taxonomy, header=TRUE, sep="\t", row.names=1)
+taxonomy$ASV <- rownames(taxonomy)
 counts <- read.delim(snakemake@input$counts, header=TRUE, sep="\t", row.names=1)
 params <- read.delim(snakemake@input$params, header=TRUE, sep="\t")
 finbol_tax <- read.delim(snakemake@input$finbol_tax)
