@@ -60,4 +60,4 @@ snakemake --profile myprofile
 
 - **raw_results/<order>/** contains lists of discarded OTUs/clusters for each order/parameter combination, _e.g_ `raw_results/Diptera/evo_run1_discarded_otus.tsv` contain discarded OTUs from run 1 of the EVO filter for the Diptera order.
 - **results/<order>/** contains evaluation results for each order/parameter combination, _e.g_ `results/Diptera/evo_res_1.tsv` contain evaluation results from run 1 of the EVO filter for the Diptera order.
-- **results/<method>_res.tsv** are aggregated results for each method (`evo`, `echo`, `abundance`, `ee`, `eee`, `eeea`) including the combined **Hexapoda** results.
+- **results/<method>_res.tsv** contain aggregated results for each method (`evo`, `echo`, `abundance`, `ee`, `eee`, `eeea`) including the combined **Hexapoda** results.
