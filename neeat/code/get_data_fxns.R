@@ -5,7 +5,7 @@ get_se_cluster_taxonomy <- function(f) { read.delim(f) }
 get_se_cluster_rep_taxonomy <- function(f) { T<- get_se_cluster_taxonomy(f); T[T$representative==1,] }
 
 get_se_cluster_counts_df <- function(f) { read.delim(f) }
-get_se_cluster_counts_dt <- function(f) { require(data.table); fread("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_counts.tsv") }
+get_se_cluster_counts_dt <- function(f) { require(data.table); fread(f) }
 
 get_se_cluster_taxonomy_samples_hexapoda <- function(meta_f, counts_f, taxonomy_f) {
 
