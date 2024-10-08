@@ -1,19 +1,19 @@
 # Functions for getting original data. Modify the paths to fit your system.
-get_se_meta <- function() { read.delim("/cfs/klemming/projects/snic/snic2020-16-248/processed_data/ASV_data/SE.v2/CO1_sequencing_metadata_SE.tsv") }
+get_se_meta <- function(f) { read.delim(f) }
 
-get_se_cluster_taxonomy <- function() { read.delim("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_taxonomy.tsv") }
-get_se_cluster_rep_taxonomy <- function() { T<- get_se_cluster_taxonomy(); T[T$representative==1,] }
+get_se_cluster_taxonomy <- function(f) { read.delim(f) }
+get_se_cluster_rep_taxonomy <- function(f) { T<- get_se_cluster_taxonomy(f); T[T$representative==1,] }
 
-get_se_cluster_counts_df <- function() { read.delim("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_counts.tsv") }
-get_se_cluster_counts_dt <- function() { require(data.table); fread("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_counts.tsv") }
+get_se_cluster_counts_df <- function(f) { read.delim(f) }
+get_se_cluster_counts_dt <- function(f) { require(data.table); fread("/cfs/klemming/projects/snic/snic2020-16-248/git/ASV-clustering/results/swarm/SE.v2/sw.strict/samplewise.uchime_denovo/Family/runs/run2/cluster_counts.tsv") }
 
-get_se_cluster_taxonomy_samples_hexapoda <- function() {
+get_se_cluster_taxonomy_samples_hexapoda <- function(meta_f, counts_f, taxonomy_f) {
 
-    meta <- get_se_meta()
+    meta <- get_se_meta(meta_f)
 
     samples <- meta$sampleID_NGI[meta$lab_sample_type=="sample" & meta$sequencing_status=="sequencing successful"]
 
-    counts <- get_se_cluster_counts_dt()
+    counts <- get_se_cluster_counts_dt(counts_f)
 
     index <- match(samples,colnames(counts))
     index <- c(1, index[!is.na(index)])
@@ -23,7 +23,7 @@ get_se_cluster_taxonomy_samples_hexapoda <- function() {
     include_cols <- c(TRUE,as.logical(colSums(counts[,2:ncol(counts)])>0))
     counts <- counts[,..include_cols]
 
-    taxonomy <- get_se_cluster_taxonomy()
+    taxonomy <- get_se_cluster_taxonomy(taxonomy_f)
 
     hex_classes <- c("Insecta","Diplura","Protura","Collembola")
     taxonomy <- taxonomy[taxonomy$Class %in% hex_classes,]
