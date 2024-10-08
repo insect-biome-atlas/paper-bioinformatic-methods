@@ -1,5 +1,7 @@
 import pandas as pd
 
+configfile: "config.yml"
+
 large_orders = ["Diptera", "Hymenoptera", "Hemiptera", "Coleoptera"]
 
 def read_params(f):
@@ -77,7 +79,8 @@ rule run_echo_filter:
         require_corr=lambda wildcards: echo_params_dict[wildcards.i]["require_corr"],
         echo_filter=workflow.source_path("code/echo_filter.R"),
         eval_fun=workflow.source_path("code/evaluate_fxns.R"),
-        get_data=workflow.source_path("code/get_data_fxns.R")
+        get_data=workflow.source_path("code/get_data_fxns.R"),
+        cluster_tax=config["taxonomy_file"]
     script:
         "scripts/run_echo_filter.R"
 
@@ -103,6 +106,7 @@ rule run_ee_filter:
         dist_type=lambda wildcards: ee_params_dict[wildcards.ee_run]["dist_type"],
         dist_threshold=lambda wildcards: ee_params_dict[wildcards.ee_run]["dist_threshold"],
         require_overlap=lambda wildcards: ee_params_dict[wildcards.ee_run]["require_overlap"],
+        cluster_tax=config["taxonomy_file"]
     resources:
         mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
         runtime=lambda wildcards: 240 if wildcards.order in large_orders else 30,
@@ -132,6 +136,7 @@ rule eee_filter:
         require_overlap=lambda wildcards: eee_params_dict[wildcards.eee_run]["require_overlap"],
         dist_type=lambda wildcards: eee_params_dict[wildcards.eee_run]["dist_type"],
         dist_threshold=lambda wildcards: eee_params_dict[wildcards.eee_run]["dist_threshold"],
+        cluster_tax=config["taxonomy_file"]
     resources:
         mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
         runtime=lambda wildcards: 120 if wildcards.order in large_orders else 30,
@@ -170,6 +175,7 @@ rule run_eeea_filter:
         get_data=workflow.source_path("code/get_data_fxns.R"),
         cutoff=lambda wildcards: eeea_params_dict[wildcards.eeea_run]["cutoff"],
         cutoff_type=lambda wildcards: eeea_params_dict[wildcards.eeea_run]["cutoff_type"],
+        cluster_tax=config["taxonomy_file"]
     resources:
         mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
         runtime=lambda wildcards: 60 if wildcards.order in large_orders else 30,
@@ -197,6 +203,7 @@ rule evo_filter:
         dist_type=lambda wildcards: evo_params_dict[wildcards.evo_run]["dist_type"],
         dist_threshold=lambda wildcards: evo_params_dict[wildcards.evo_run]["dist_threshold"],
         require_overlap=lambda wildcards: evo_params_dict[wildcards.evo_run]["require_overlap"],
+        cluster_tax=config["taxonomy_file"]
     resources:
         mem_mb=lambda wildcards: 4000 if wildcards.order in large_orders else 1000,
         runtime=lambda wildcards: 120 if wildcards.order in large_orders else 30,
@@ -233,6 +240,7 @@ rule abundance_filter:
         get_data=workflow.source_path("code/get_data_fxns.R"),
         cutoff=lambda wildcards: abundance_params_dict[wildcards.abundance_run]["cutoff"],
         cutoff_type=lambda wildcards: abundance_params_dict[wildcards.abundance_run]["cutoff_type"],
+        cluster_tax=config["taxonomy_file"]
     resources:
         mem_mb=lambda wildcards: 4000 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 1000,
         runtime=lambda wildcards: 20 if wildcards.order in ["Diptera", "Hymenoptera","Coleoptera","Hemiptera","Lepidoptera", "Orthoptera"] else 10,
@@ -301,6 +309,7 @@ rule add_hexapoda:
     params:
         eval_fun=workflow.source_path("code/evaluate_fxns.R"),
         get_data=workflow.source_path("code/get_data_fxns.R"),
+        cluster_tax=config["taxonomy_file"]
     script:
         "scripts/add_hexapoda.R"
         

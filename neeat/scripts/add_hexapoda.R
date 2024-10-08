@@ -8,7 +8,7 @@ cat("Reading finbol tax\n")
 finbol_tax <- read.delim(snakemake@input$finbol_tax)
 cat("Reading se family\n")
 se_family <- read.delim(snakemake@input$se_family)
-cluster_tax <- get_se_cluster_taxonomy()
+cluster_tax <- get_se_cluster_taxonomy(snakemake@params$cluster_tax)
 cat("Reading res\n")
 res <- read.delim(snakemake@input$res, header=TRUE, sep="\t")
 

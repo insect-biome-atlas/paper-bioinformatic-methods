@@ -11,7 +11,7 @@ matchlist <- read.delim(snakemake@input$matchlist, header=TRUE, sep="\t")
 params <- read.delim(snakemake@input$params, header=TRUE, sep="\t")
 finbol_tax <- read.delim(snakemake@input$finbol_tax)
 se_family <- read.delim(snakemake@input$se_family)
-cluster_tax <- get_se_cluster_taxonomy()
+cluster_tax <- get_se_cluster_taxonomy(snakemake@params$cluster_tax)
 i <- snakemake@wildcards$i
 ord <- snakemake@wildcards$order
 
