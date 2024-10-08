@@ -1,45 +1,45 @@
-"run"	"min_match"	"min_overlap"	"read_ratio_type"	"max_read_ratio"	"require_corr"
-1	84	0.9	max	1	FALSE
-2	84	0.9	mean	1	FALSE
-3	84	0.95	max	0.1	TRUE
-4	84	0.95	max	0.1	FALSE
-5	84	0.95	max	0.8	TRUE
-6	84	0.95	max	0.8	FALSE
-7	84	0.95	mean	0.1	TRUE
-8	84	0.95	mean	0.1	FALSE
-9	84	0.95	mean	0.8	TRUE
-10	84	0.95	mean	0.8	FALSE
-11	84	0.95	max	1	FALSE
-12	84	0.95	mean	1	FALSE
-13	84	0.95	max	1	TRUE
-14	84	0.95	mean	1	TRUE
-15	84	0.95	max	0.5	TRUE
-16	84	0.95	mean	0.5	TRUE
-17	84	0.95	max	0.5	FALSE
-18	84	0.95	mean	0.5	FALSE
-19	84	0.9	max	0.1	FALSE
-20	84	0.9	mean	0.1	FALSE
-21	84	0.9	max	0.5	FALSE
-22	84	0.9	mean	0.5	FALSE
-23	84	0.9	max	0.8	FALSE
-24	84	0.9	mean	0.8	FALSE
-25	84	0.9	max	0.1	TRUE
-26	84	0.9	mean	0.1	TRUE
-27	84	0.9	max	0.5	TRUE
-28	84	0.9	mean	0.5	TRUE
-29	84	0.9	max	0.8	TRUE
-30	84	0.9	mean	0.8	TRUE
-31	84	0.9	max	1	TRUE
-32	84	0.9	mean	1	TRUE
-33	84	0.99	max	0.1	TRUE
-34	84	0.95	max	0.05	TRUE
-35	84	0.90	max	0.1	TRUE
-36	84	0.90	max	0.05	TRUE
-37	90	0.95	max	0.1	TRUE
-38	95	0.95	max	0.1	TRUE
-39	84	0.99	mean	0.1	TRUE
-40	84	0.95	mean	0.05	TRUE
-41	84	0.90	mean	0.1	TRUE
-42	84	0.90	mean	0.05	TRUE
-43	90	0.95	mean	0.1	TRUE
-44	95	0.95	mean	0.1	TRUE
+run	min_match	min_overlap	read_ratio_type	max_read_ratio	require_corr	count_type
+1	84	0.9	max	1.0	False	raw
+2	84	0.9	mean	1.0	False	raw
+3	84	0.95	max	0.1	True	raw
+4	84	0.95	max	0.1	False	raw
+5	84	0.95	max	0.8	True	raw
+6	84	0.95	max	0.8	False	raw
+7	84	0.95	mean	0.1	True	raw
+8	84	0.95	mean	0.1	False	raw
+9	84	0.95	mean	0.8	True	raw
+10	84	0.95	mean	0.8	False	raw
+11	84	0.95	max	1.0	False	raw
+12	84	0.95	mean	1.0	False	raw
+13	84	0.95	max	1.0	True	raw
+14	84	0.95	mean	1.0	True	raw
+15	84	0.95	max	0.5	True	raw
+16	84	0.95	mean	0.5	True	raw
+17	84	0.95	max	0.5	False	raw
+18	84	0.95	mean	0.5	False	raw
+19	84	0.9	max	0.1	False	raw
+20	84	0.9	mean	0.1	False	raw
+21	84	0.9	max	0.5	False	raw
+22	84	0.9	mean	0.5	False	raw
+23	84	0.9	max	0.8	False	raw
+24	84	0.9	mean	0.8	False	raw
+25	84	0.9	max	0.1	True	raw
+26	84	0.9	mean	0.1	True	raw
+27	84	0.9	max	0.5	True	raw
+28	84	0.9	mean	0.5	True	raw
+29	84	0.9	max	0.8	True	raw
+30	84	0.9	mean	0.8	True	raw
+31	84	0.9	max	1.0	True	raw
+32	84	0.9	mean	1.0	True	raw
+33	84	0.99	max	0.1	True	raw
+34	84	0.95	max	0.05	True	raw
+35	84	0.9	max	0.1	True	raw
+36	84	0.9	max	0.05	True	raw
+37	90	0.95	max	0.1	True	raw
+38	95	0.95	max	0.1	True	raw
+39	84	0.99	mean	0.1	True	raw
+40	84	0.95	mean	0.05	True	raw
+41	84	0.9	mean	0.1	True	raw
+42	84	0.9	mean	0.05	True	raw
+43	90	0.95	mean	0.1	True	raw
+44	95	0.95	mean	0.1	True	raw
