@@ -33,6 +33,8 @@ The input data was created from a dataset of ASVs generated from samples collect
 tar -xvzf data/benchmark-data.tar.gz -C data
 ```
 
+Also edit the `config.yml` file so that `taxonomy_file` points to the cluster taxonomy file for the correct data.
+
 ## Run the workflow
 
 1. If running locally on a laptop:
