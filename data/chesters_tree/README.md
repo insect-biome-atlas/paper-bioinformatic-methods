@@ -1,5 +1,11 @@
 # Modifications to make data compatible with EPA-NG and GAPPA
 
+> [!IMPORTANT] 
+> The following files should be used to assign taxonomy to ASVs using EPA-NG and GAPPA:
+> - chesters_new_outgroups_aligned.trim0.9.fasta (alignment)
+> - chesters_new_outgroups.nwk (tree)
+> - taxonomy.tsv (taxonomy)
+
 1. Trim gaps in the alignment to only keep positions with <90% gap characters
 
 ```bash
