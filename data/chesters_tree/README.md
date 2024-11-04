@@ -6,6 +6,8 @@
 > - chesters_new_outgroups.nwk (tree)
 > - taxonomy.tsv (taxonomy)
 
+Below is a description of how these files were generated.
+
 1. Trim gaps in the alignment to only keep positions with <90% gap characters
 
 ```bash
