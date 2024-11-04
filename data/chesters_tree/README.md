@@ -3,13 +3,20 @@
 1. Trim gaps in the alignment to only keep positions with <90% gap characters
 
 ```bash
-python /cfs/klemming/projects/snic/snic2020-16-248/git/paper-annotation/code/trim_gaps.py -i chesters_new_outgroups_aligned.fasta -o chesters_new_outgroups_aligned.trim0.9.fasta -f 0.9 > chesters_new_outgroups_aligned.trim0.9.log
+python trim_gaps.py -i chesters_new_outgroups_aligned.fasta.gz -o chesters_new_outgroups_aligned.trim0.9.fasta -f 0.9
 ```
 
-Reformat the taxonomy file. With commit
-[85775a6](https://github.com/insect-biome-atlas/paper-bioinformatic-methods/commit/85775a6a67398b642e9dff23086f5cd6878d6755)
-the taxonomy file was updated with missing species names as well as missing
-genus for _Anoploderomorpha izumii_.
+2. Reformat the taxonomy file. 
+
+Here, missing values are filled with '', columns are filtered and renamed and a
+taxonomy file compatible with EPA-NG/GAPPA is written.
+
+
+> [!NOTE] 
+> With commit
+> [85775a6](https://github.com/insect-biome-atlas/paper-bioinformatic-methods/commit/85775a6a67398b642e9dff23086f5cd6878d6755)
+> the taxonomy file was updated with missing species names as well as missing
+> genus for _Anoploderomorpha izumii_.
 
 ```python
 import pandas as pd
