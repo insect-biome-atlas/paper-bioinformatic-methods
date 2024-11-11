@@ -24,8 +24,9 @@ for (i in 1:length(bitscores))
 
 res <- data.frame()
 for (ord in orders) {
-
-    ord_tax <- read.delim(paste0(data_path,ord,"_taxonomy.tsv"))
+    taxfile <- paste0(data_path,ord,"_taxonomy.tsv")
+    if (!file.exists(taxfile)) next
+    ord_tax <- read.delim(taxfile)
 
     for (i in 1:nrow(params)) {
 
@@ -44,7 +45,7 @@ for (ord in orders) {
                     )
 
         # Write results up to this order just in case
-        write.table(res,res_file, sep="\t", row.names=FALSE)
+        #write.table(res,res_file, sep="\t", row.names=FALSE)
     }
 }
 

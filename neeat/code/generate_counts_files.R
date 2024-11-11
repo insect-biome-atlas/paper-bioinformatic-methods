@@ -1,5 +1,5 @@
-source("~/dev/ms-repos-iba/utils/spikes_controls_fxns.R")
-source("get_data_fxns.R")
+source("/cfs/klemming/projects/snic/snic2020-16-248/git/utils/spikes_controls_fxns.R")
+source("/cfs/klemming/projects/snic/snic2020-16-248/git/paper-bioinformatic-methods/neeat/code/get_data_fxns.R")
 
 # Read in Sweden data
 cat("Processing Sweden data\n")
@@ -17,7 +17,7 @@ include_rows <- rowSums(counts[,2:ncol(counts)])>0
 counts <- counts[include_rows,]
 include_cols <- c(TRUE,as.logical(colSums(counts[,2:ncol(counts)])>0))
 counts <- counts[,include_cols]
-write.table(counts,"../bigdata/cluster_counts.tsv", row.names=FALSE, sep="\t")
+write.table(counts,"/cfs/klemming/projects/snic/snic2020-16-248/git/paper-bioinformatic-methods/neeat/bigdata/cluster_counts.tsv", row.names=FALSE, sep="\t")
 
 
 cat("Generating calibrated counts table\n")
@@ -39,7 +39,7 @@ if (length(spikein_clusters) > 0) {
         ccounts[,i] <- ceiling(ccounts[,i] / correction[i-1])
     }
 }
-write.table(ccounts, "../bigdata/calibrated_cluster_counts.tsv", sep="\t",row.names=FALSE)
+write.table(ccounts, "/cfs/klemming/projects/snic/snic2020-16-248/git/paper-bioinformatic-methods/neeat/bigdata/calibrated_cluster_counts.tsv", sep="\t",row.names=FALSE)
 rm(ccounts)
 
 
@@ -53,7 +53,7 @@ for (i in 2:ncol(pcounts)) {
     if (sample_counts[i-1] != 0)
         pcounts[,i] <- pcounts[,i] / sample_counts[i-1]
 }
-write.table(pcounts,"../bigdata/tot_proportional_cluster_counts.tsv",sep="\t",row.names=FALSE)
+write.table(pcounts,"/cfs/klemming/projects/snic/snic2020-16-248/git/paper-bioinformatic-methods/neeat/bigdata/tot_proportional_cluster_counts.tsv",sep="\t",row.names=FALSE)
 
 
 cat("Generating proportional (of sample reads without spikeins) counts table\n")
@@ -65,5 +65,5 @@ for (i in 2:ncol(pcounts)) {
     if (sample_counts[i-1] != 0)
         pcounts[,i] <- pcounts[,i] / (sample_counts[i-1] - spike_counts[i-1])
 }
-write.table(pcounts,"../bigdata/sample_proportional_cluster_counts.tsv",sep="\t",row.names=FALSE)
+write.table(pcounts,"/cfs/klemming/projects/snic/snic2020-16-248/git/paper-bioinformatic-methods/neeat/bigdata/sample_proportional_cluster_counts.tsv",sep="\t",row.names=FALSE)
 

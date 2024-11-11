@@ -4,24 +4,34 @@ source("../code/get_data_fxns.R")
 
 data_path <- "../data/"
 
-D <- read.delim("../raw_lulu_results/lulu_res.tsv")
-
 T <- get_se_cluster_taxonomy_samples_hexapoda()
 orders <- unique(T$Order[!grepl("unclassified",T$Order) & !grepl("_X",T$Order)])
 
 T1 <- T[T$representative==1,]
-D$ASV <- T1$ASV[match(D$cluster,T1$cluster)]
+
 
 finbol_tax <- read.delim("../evaluation_data/finbol_taxonomy.tsv")
 se_family <- read.delim("../evaluation_data/se_fauna_family.tsv")
 
 res_file <- "../results/lulu_res.tsv"
 
-params <- data.frame(list(run=1,method="LULU",min_match=84,min_overlap=0.95,read_ratio_type="max",max_read_ratio=1.0))
+params <- data.frame(list(run=c(1,3),method="LULU",min_match=84,minimum_relative_cooccurence=0.95, min_overlap=0.95,read_ratio_type="max",max_read_ratio=1.0, aligner=c("vsearch","blastn"), max_target_seqs=10, minimum_ratio=1, minimum_ratio_type="min"))
 
 res <- data.frame()
-for (ord in orders) {
-
+i <- 1
+for (run in params$run) {
+  raw_file <- paste0("../raw_lulu_results/lulu_raw_",run,".tsv")
+    if (!file.exists(raw_file)) {
+      next
+    }
+  run_res <- data.frame()
+  for (ord in orders) {
+    D <- read.delim(raw_file)
+    D$ASV <- T1$ASV[match(D$cluster,T1$cluster)]
+    taxfile <- paste0(data_path,ord,"_taxonomy.tsv")
+    if (!file.exists(taxfile)) {
+      next
+    }
     ord_tax <- read.delim(paste0(data_path,ord,"_taxonomy.tsv"))
 
     discarded_otus <- D$ASV[D$numt==TRUE & D$ASV %in% ord_tax$ASV]
@@ -30,18 +40,20 @@ for (ord in orders) {
 
     y <- eval_res(discarded_otus, ord_tax, finbol_tax, cluster_tax, se_family, debug=FALSE)
 
-    res <- rbind(res,
-                 c(taxon=ord,
-                   as.list(params[1,]),
-                   as.list(y)
+    run_res <- rbind(run_res,
+                c(taxon=ord,
+                  as.list(params[i,]),
+                  as.list(y)
                   )
                 )
-
-    # Write results up to this order just in case
-    write.table(res,res_file, sep="\t", row.names=FALSE)
+  }
+  run_res <- add_hexapoda_res(run_res,params[i,])
+  # Write results up to this order just in case
+  #write.table(res,res_file, sep="\t", row.names=FALSE)
+  res <- rbind(res,run_res)
+  i <- i+1
 }
 
-res <- add_hexapoda_res(res,params)
 
 # Write final version of result table
 write.table(res,res_file, sep="\t", row.names=FALSE)

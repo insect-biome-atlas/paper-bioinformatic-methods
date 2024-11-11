@@ -1,0 +1,13 @@
+name: neeat-benchmark
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python
+  - snakemake
+  - pandas 
+  - r-data.table
+  - pip
+  - pip:
+    - snakemake-executor-plugin-slurm
