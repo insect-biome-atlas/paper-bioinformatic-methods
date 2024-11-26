@@ -1,3 +1,11 @@
+# Script for summarizing the taxonomic annotation data
+
+# TODO: Set the paths to your local copies of the raw and 
+# processed IBA data (see IBA data paper for the Figshare links)
+raw_data <- "~/dev/figshare-repos/iba/raw_data/v4/"
+processed_data <- "~/dev/figshare-repos/iba/processed_data/v2/"
+
+# We will be using data.table
 library(data.table)
 
 # Help function for summarizing row reads
@@ -34,11 +42,11 @@ add_results <- function(df, method, country, count_type, A, A_reads) {
 
     prefix <- list(method=method, country=country, count_type=count_type)
 
-    for (rank in c("Phylum","Class","Order","Family","Genus","Species")) {
+    for (rank in c("Class","Order","Family","Genus","Species")) {
         
         res <- num_resolved(A, rank, A_reads)
 
-        if (rank=="Phylum") {
+        if (rank=="Class") {
             df <- rbind(df, c(prefix,
                               rank=rank,
                               count=res$count,
@@ -71,60 +79,55 @@ annotation_res <- data.frame(list(method=character(),
 
 # Analyze Swedish annotations at ASV level
 cat("Reading ASV counts for SE\n")
-C <- fread("~/dev/figshare-repos/iba/raw_data/CO1_asv_counts_SE.tsv")
+C <- fread(paste0(raw_data,"CO1_asv_counts_SE.tsv"))
 cat("Computing reads for SE ASVs\n")
 C_reads <- row_reads(C)
 cat("done\n")
 
-S1<-fread("../bigdata/sintax_taxonomy_SE.tsv")
+S1<-fread(paste0(processed_data,"asv_taxonomy_sintax_SE.tsv"))
 S1_reads <- match_reads(C,C_reads,S1$ASV)
 annotation_res <- add_results(annotation_res, "sintax", "Sweden", "ASVs", S1, S1_reads)
 
-V1<-fread("../bigdata/vsearch_taxonomy_SE.tsv")
+V1<-fread(paste0(processed_data,"asv_taxonomy_vsearch_SE.tsv"))
 colnames(V1) <- c("ASV","Kingdom","Phylum","Class","Order","Family","Genus","Species","Consensus")
 V1_reads <- match_reads(C,C_reads,V1$ASV)
 annotation_res <- add_results(annotation_res, "vsearch", "Sweden", "ASVs", V1, V1_reads)
 
-E1<-fread("../bigdata/epang_baseball_taxonomy_SE.tsv")
+E1<-fread(paste0(processed_data,"asv_taxonomy_epang_SE.tsv"))
 E1_reads <- match_reads(C,C_reads,E1$ASV)
 annotation_res <- add_results(annotation_res, "epang", "Sweden", "ASVs", E1, E1_reads)
 
-EE1<-fread("../bigdata/epang_baseball_taxonomy_chesters_expanded_SE.tsv")
-EE1_reads <- match_reads(C,C_reads,EE1$ASV)
-annotation_res <- add_results(annotation_res, "epang_exp", "Sweden", "ASVs", EE1, EE1_reads)
-
+# Free up memory
 rm(C)
+
 
 # Analyze Malagasy annotations at ASV level
 cat("Reading ASV counts for MG\n")
-C <- fread("~/dev/figshare-repos/iba/raw_data/CO1_asv_counts_MG.tsv")   # Sample labels are irrelevant
+C <- fread(paste0(raw_data,"CO1_asv_counts_MG.tsv"))
 cat("Computing reads for MG ASVs\n")
 C_reads <- row_reads(C)
 cat("done\n")
 
-S2<-fread("../bigdata/sintax_taxonomy_MG.tsv")
+S2<-fread(paste0(processed_data,"asv_taxonomy_sintax_MG.tsv"))
 S2_reads <- match_reads(C,C_reads,S2$ASV)
 annotation_res <- add_results(annotation_res, "sintax", "Madagascar", "ASVs", S2, S2_reads)
 
-V2<-fread("../bigdata/vsearch_taxonomy_MG.tsv")
+V2<-fread(paste0(processed_data,"asv_taxonomy_vsearch_MG.tsv"))
 colnames(V2) <- c("ASV","Kingdom","Phylum","Class","Order","Family","Genus","Species","Consensus")
 V2_reads <- match_reads(C,C_reads,V2$ASV)
 annotation_res <- add_results(annotation_res, "vsearch", "Madagascar", "ASVs", V2, V2_reads)
 
-E2<-fread("../bigdata/epang_baseball_taxonomy_MG.tsv")
+E2<-fread(paste0(processed_data,"asv_taxonomy_epang_MG.tsv"))
 E2_reads <- match_reads(C,C_reads,E2$ASV)
 annotation_res <- add_results(annotation_res, "epang", "Madagascar", "ASVs", E2, E2_reads)
 
-EE2<-fread("../bigdata/epang_baseball_taxonomy_chesters_expanded_MG.tsv")
-EE2_reads <- match_reads(C,C_reads,EE2$ASV)
-annotation_res <- add_results(annotation_res, "epang_exp", "Madagascar", "ASVs", EE2, EE2_reads)
-
+# Free up memory
 rm(C)
 
 # Analyze Swedish annotations at cluster level
-C <- fread("~/dev/figshare-repos/iba/processed_data/SE.v2/cluster_counts.tsv")
+C <- fread(paste0(processed_data,"cluster_counts_SE.tsv"))
 C_reads <- row_reads(C)
-T1 <- read.delim("~/dev/figshare-repos/iba/processed_data/SE.v2/cluster_taxonomy.tsv")
+T1 <- read.delim(paste0(processed_data,"cluster_taxonomy_SE.tsv"))
 T1 <- T1[T1$representative==1,]
 
 S1 <- S1[S1$ASV %in% T1$ASV,]
@@ -139,14 +142,11 @@ E1 <- E1[E1$ASV %in% T1$ASV,]
 E1_reads <- match_reads(C,C_reads,T1$cluster[match(E1$ASV,T1$ASV)])
 annotation_res <- add_results(annotation_res, "epang", "Sweden", "clusters", E1, E1_reads)
 
-EE1 <- EE1[EE1$ASV %in% T1$ASV,]
-E1_reads <- match_reads(C,C_reads,T1$cluster[match(EE1$ASV,T1$ASV)])
-annotation_res <- add_results(annotation_res, "epang_exp", "Sweden", "clusters", EE1, EE1_reads)
 
 # Analyze Malagasy annotatations at cluster level
-C <- fread("~/dev/figshare-repos/iba/processed_data/MG.v2/cluster_counts.tsv")
+C <- fread(paste0(processed_data,"cluster_counts_MG.tsv"))
 C_reads <- row_reads(C)
-T2 <- read.delim("~/dev/figshare-repos/iba/processed_data/MG.v2/cluster_taxonomy.tsv")
+T2 <- read.delim(paste0(processed_data,"cluster_taxonomy_MG.tsv"))
 T2 <- T2[T2$representative==1,]
 
 S2 <- S2[S2$ASV %in% T2$ASV,]
@@ -161,9 +161,7 @@ E2 <- E2[E2$ASV %in% T2$ASV,]
 E2_reads <- match_reads(C,C_reads,T2$cluster[match(E2$ASV,T2$ASV)])
 annotation_res <- add_results(annotation_res, "epang", "Madagascar", "clusters", E2, E2_reads)
 
-EE2 <- EE2[EE2$ASV %in% T2$ASV,]
-E2_reads <- match_reads(C,C_reads,T2$cluster[match(EE2$ASV,T2$ASV)])
-annotation_res <- add_results(annotation_res, "epang_exp", "Madagascar", "clusters", EE2, EE2_reads)
 
+# Write result table
 write.table(annotation_res, "../results/annotation_res.tsv", row.names=FALSE, sep="\t")
 

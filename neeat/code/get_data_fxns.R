@@ -11,7 +11,7 @@ get_se_cluster_taxonomy_samples_hexapoda <- function(meta_f, counts_f, taxonomy_
 
     meta <- get_se_meta(meta_f)
 
-    samples <- meta$sampleID_NGI[meta$lab_sample_type=="sample" & meta$sequencing_status=="sequencing successful"]
+    samples <- meta$sampleID_NGI[meta$lab_sample_type=="sample" & meta$sequencing_successful==TRUE]
 
     counts <- get_se_cluster_counts_dt(counts_f)
 
