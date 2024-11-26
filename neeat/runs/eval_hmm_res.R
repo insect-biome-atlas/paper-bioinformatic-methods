@@ -8,7 +8,16 @@ data_path <- "../data/"
 D <- read.delim("../raw_hmm_results/bitscore_filtered.txt")
 D <- rbind(D,read.delim("../raw_hmm_results/bitscore_outliers.txt"))
 
-T <- get_se_cluster_taxonomy_samples_hexapoda()
+# TODO: Set correct paths to IBA data files
+raw_data_path <- "~/dev/figshare-repos/iba/raw_data/v4/"
+processed_data_path <- "~/dev/figshare-repos/iba/processed_data/v2/"
+
+# Set file names
+meta_f <- paste0(raw_data_path,"CO1_sequencing_metadata_SE.tsv")
+counts_f <- paste0(processed_data_path,"cluster_counts_SE.tsv")
+taxonomy_f <- paste0(processed_data_path,"cluster_taxonomy_SE.tsv")
+
+T <- get_se_cluster_taxonomy_samples_hexapoda(meta_f, counts_f, taxonomy_f)
 orders <- unique(T$Order[!grepl("unclassified",T$Order) & !grepl("_X",T$Order)])
 
 finbol_tax <- read.delim("../evaluation_data/finbol_taxonomy.tsv")
@@ -16,7 +25,7 @@ se_family <- read.delim("../evaluation_data/se_fauna_family.tsv")
 
 res_file <- "../results/hmm_res.tsv"
 
-bitscores <- seq(from=163,to=243,by=10)
+bitscores <- seq(from=160,to=300,by=5)
 
 params <- data.frame()
 for (i in 1:length(bitscores))
@@ -24,9 +33,11 @@ for (i in 1:length(bitscores))
 
 res <- data.frame()
 for (ord in orders) {
-    taxfile <- paste0(data_path,ord,"_taxonomy.tsv")
-    if (!file.exists(taxfile)) next
-    ord_tax <- read.delim(taxfile)
+
+    if (sum(T$Order==ord & T$representative==1) == 1)
+        next
+
+    ord_tax <- T[T$Order==ord & T$representative==1,]
 
     for (i in 1:nrow(params)) {
 
@@ -45,7 +56,7 @@ for (ord in orders) {
                     )
 
         # Write results up to this order just in case
-        #write.table(res,res_file, sep="\t", row.names=FALSE)
+        write.table(res,res_file, sep="\t", row.names=FALSE)
     }
 }
 
