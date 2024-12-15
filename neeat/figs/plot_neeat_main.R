@@ -23,8 +23,8 @@ plot_benchmark <- function(res, taxon) {
 
     ggplot() +
         geom_point(data = res, size = 4, aes(x = false_neg_comb, y = false_pos_comb, shape=Method, color=Method)) +
-        scale_shape_manual(values=c(16,15,3,17)) +
-        scale_color_manual(values=c("blue","orange","black","green")) +
+        scale_shape_manual(values=c(16,15,18,17)) +
+        scale_color_manual(values=c("blue","orange","black","springgreen3")) +
         theme_minimal() +
         theme(legend.position = "bottom") +
         theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "inches"),
@@ -94,7 +94,7 @@ plot_tax_annot <- function(df, ylab, reads=FALSE) {
                 plot.tag = element_text(size=22)
               ) +
         scale_x_continuous(breaks = 1:6, labels = ranks) +
-        scale_color_manual(values = c("blue","orange","green")) +
+        scale_color_manual(values = c("blue","orange","springgreen3")) +
         guides(
             color = guide_legend(title="Method"),   # Linetype and color legend
             shape = guide_legend(title="Country"),  # Shape legend
@@ -117,7 +117,7 @@ asv_res <- annotation_res %>% filter(count_type=="ASVs")
 cluster_res <- annotation_res %>% filter(count_type=="clusters")
 
 # Generate plot
-plot_B <- plot_tax_annot(asv_res,"Proportion of ASV reads", reads=TRUE)
+plot_B <- plot_tax_annot(asv_res,"Proportion of reads", reads=TRUE)
 
 
 ########### Data for plots C & D ################
@@ -183,9 +183,9 @@ plot_match <- function(df, lbl_pos) {
         ylab("No. of clusters found") +
         xlab("No. of known species") +
         theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), 
-                           "inches"), 
+                           "inches"),
             axis.title.x = element_text(vjust=-1.0),
-            axis.title.y = element_text(vjust=5.0),
+            axis.title.y = element_text(vjust=0.0),
             axis.text=element_text(size=16),
             axis.title=element_text(size=16),
             legend.text=element_text(size=12),
@@ -202,11 +202,11 @@ plot_D <- plot_match(df_filtered,"right")
 
 
 ########### Make final figure ###############
-ggsave("Fig_neeat_main.pdf",
+ggsave("Fig_neeat_main.jpg",
        width=20.0,
-       height=20.0,
+       height=18.0,
        plot=(plot_A + plot_B) / (plot_C + plot_D) +
-            plot_annotation(tag_levels="A") +
+            plot_annotation(tag_levels="a",theme=theme(plot.title=element_text(face="bold"))) +
             plot_layout(heights=c(1,1.3))
 )
 
