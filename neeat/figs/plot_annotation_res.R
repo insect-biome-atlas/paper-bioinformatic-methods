@@ -41,8 +41,6 @@ cluster_res <- annotation_res %>% filter(count_type=="clusters")
 
 # Generate plots
 p1 <- plot_annotation_res(asv_res,"Proportion of ASVs")
-p2 <- plot_annotation_res(asv_res,"Proportion of ASV reads", reads=TRUE)
-p3 <- plot_annotation_res(cluster_res,"Proportion of clusters")
-p4 <- plot_annotation_res(cluster_res,"Proportion of cluster reads", reads=TRUE)
+p2 <- plot_annotation_res(cluster_res,"Proportion of clusters")
 
-ggsave("Fig_annotation_res.pdf", width=10.0, height=10.0, plot=(p1 + p2) / (p3 + p4) + plot_layout(guides="collect"))
+ggsave("Fig_annotation_res.jpg", width=10.0, height=5.0, plot=(p1 + p2) + plot_layout(guides="collect"))
