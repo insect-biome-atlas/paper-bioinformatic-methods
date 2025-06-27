@@ -203,8 +203,21 @@ plot_D <- plot_match(df_filtered,"right")
 
 ########### Make final figure ###############
 ggsave("Fig_neeat_main.jpg",
+       device="jpg",
        width=20.0,
        height=18.0,
+       units="in",
+       dpi=300,
+       plot=(plot_A + plot_B) / (plot_C + plot_D) +
+            plot_annotation(tag_levels="a",theme=theme(plot.title=element_text(face="bold"))) +
+            plot_layout(heights=c(1,1.3))
+)
+ggsave("Fig_neeat_main.eps",
+       device="eps",
+       width=20.0,
+       height=18.0,
+       units="in",
+       dpi=300,
        plot=(plot_A + plot_B) / (plot_C + plot_D) +
             plot_annotation(tag_levels="a",theme=theme(plot.title=element_text(face="bold"))) +
             plot_layout(heights=c(1,1.3))
